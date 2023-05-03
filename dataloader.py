@@ -1,12 +1,20 @@
-import torch
-import torch.nn as nn
-from snntorch.spikevision import spikedata
+from torchvision import datasets, transforms
 
 
 def load_data(config):
     data_dir = config["data_dir"]
-    # Note: the train set / test set are of different durations, we used num_steps=100 due to memory limits.
-    # You will likely to improve our reported results by increasing num_steps=100 to 150.
-    trainset = spikedata.DVSGesture(data_dir, train=True, num_steps=100, dt=3000, ds=4)
-    testset = spikedata.DVSGesture(data_dir, train=False, num_steps=600, dt=3000, ds=4)
+    transform = transforms.Compose(
+        [
+            transforms.Resize((28, 28)),
+            transforms.Grayscale(),
+            transforms.ToTensor(),
+            transforms.Normalize((0,), (1,)),
+        ]
+    )
+    trainset = datasets.FashionMNIST(
+        data_dir, train=True, download=True, transform=transform
+    )
+    testset = datasets.FashionMNIST(
+        data_dir, train=False, download=True, transform=transform
+    )
     return trainset, testset

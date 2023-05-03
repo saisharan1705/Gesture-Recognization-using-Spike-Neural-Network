@@ -13,11 +13,11 @@ from train import train
 from test import test
 
 config = {
-    "exp_name": "DVS",  # Experiment name
+    "exp_name": "FMNIST",  # Experiment name
     "num_trials_eval": 3,  # Number of trails to execute (separate training and evaluation instances)
     "num_epochs_eval": 500,  # Number of epochs to train for (per trial)
     "data_dir": "~/data/",  # Data directory to download and store data
-    "batch_size": 16,  # Batch size
+    "batch_size": 128,  # Batch size
     "seed": 0,  # Random seed
     "num_workers": 0,  # Number of workers for the dataloader
     "num_bits": 4,  # Bit resolution. If None, floating point resolution is used
@@ -25,21 +25,21 @@ config = {
     "early_stopping": True,  # Whether or not to use early stopping
     "patience": 100,  # Number of epochs to wait for improvement before stopping
     # Network parameters
-    "grad_clip": True,  # Whether or not to clip gradients
-    "weight_clip": True,  # Whether or not to clip weights
-    "batch_norm": False,  # Whether or not to use batch normalization
-    "dropout": 0.203,  # Dropout rate
-    "beta": 0.614,  # Decay rate parameter (beta)
-    "threshold": 0.427,  # Threshold parameter (theta)
-    "lr": 2.634e-3,  # Initial learning rate
-    "slope": 4.413,  # Slope value (k)
+    "grad_clip": False,  # Whether or not to clip gradients
+    "weight_clip": False,  # Whether or not to clip weights
+    "batch_norm": True,  # Whether or not to use batch normalization
+    "dropout": 0.073556,  # Dropout rate
+    "beta": 0.974,  # Decay rate parameter (beta)
+    "threshold": 2.473,  # Threshold parameter (theta)
+    "lr": 2.908e-3,  # Initial learning rate
+    "slope": 5.5565,  # Slope value (k)
     # Fixed params
-    "num_steps": 1,  # Number of timesteps to encode input for 100 TODO
+    "num_steps": 100,  # Number of timesteps to encode input for
     "correct_rate": 0.8,  # Correct rate
     "incorrect_rate": 0.2,  # Incorrect rate
     "betas": (0.9, 0.999),  # Adam optimizer beta values
-    "t_max": 735,  # Frequency of the cosine annealing scheduler (5 epochs)
-    "t_0": 735,  # Initial frequency of the cosine annealing scheduler
+    "t_max": 4690,  # Frequency of the cosine annealing scheduler (5 epochs)
+    "t_0": 4690,  # Initial frequency of the cosine annealing scheduler
     "t_mult": 2,  # The frequency of cosine is halved after every 4690 iters (10 epochs)
     "eta_min": 0,  # Minimum learning rate
 }

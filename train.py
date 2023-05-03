@@ -9,8 +9,8 @@ def train(config, net, trainloader, criterion, optimizer, device="cpu", schedule
     i = 0
     for data, labels in trainloader:
         data, labels = data.to(device), labels.to(device)
-        spk_rec, _ = net(data.permute(1, 0, 2, 3, 4))
-        loss = criterion(spk_rec, labels.long())
+        spk_rec, _ = net(data)
+        loss = criterion(spk_rec, labels)
         optimizer.zero_grad()
         loss.backward()
         if config["grad_clip"]:

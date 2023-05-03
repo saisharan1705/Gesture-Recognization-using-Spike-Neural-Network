@@ -23,29 +23,29 @@ class Net(nn.Module):
             self.init_quantized_net()
 
     def init_net(self):
-        self.conv1 = nn.Conv2d(2, 16, 5, bias=False)
+        self.conv1 = nn.Conv2d(1, 16, 5, bias=False)
         self.conv1_bn = nn.BatchNorm2d(16)
         self.lif1 = snn.Leaky(self.beta, threshold=self.thr, spike_grad=self.spike_grad)
-        self.conv2 = nn.Conv2d(16, 32, 5, bias=False)
-        self.conv2_bn = nn.BatchNorm2d(32)
+        self.conv2 = nn.Conv2d(16, 64, 5, bias=False)
+        self.conv2_bn = nn.BatchNorm2d(64)
         self.lif2 = snn.Leaky(self.beta, threshold=self.thr, spike_grad=self.spike_grad)
-        self.fc1 = nn.Linear(32 * 5 * 5, 11)
+        self.fc1 = nn.Linear(64 * 4 * 4, 10)
         self.lif3 = snn.Leaky(self.beta, threshold=self.thr, spike_grad=self.spike_grad)
         self.dropout = nn.Dropout(self.p1)
 
     def init_quantized_net(self):
         self.conv1 = qnn.QuantConv2d(
-            2, 16, 5, bias=False, weight_bit_width=self.num_bits
+            1, 16, 5, bias=False, weight_bit_width=self.num_bits
         )
         self.conv1_bn = nn.BatchNorm2d(16)
         self.lif1 = snn.Leaky(self.beta, threshold=self.thr, spike_grad=self.spike_grad)
         self.conv2 = qnn.QuantConv2d(
-            16, 32, 5, bias=False, weight_bit_width=self.num_bits
+            16, 64, 5, bias=False, weight_bit_width=self.num_bits
         )
-        self.conv2_bn = nn.BatchNorm2d(32)
+        self.conv2_bn = nn.BatchNorm2d(64)
         self.lif2 = snn.Leaky(self.beta, threshold=self.thr, spike_grad=self.spike_grad)
         self.fc1 = qnn.QuantLinear(
-            32 * 5 * 5, 11, bias=False, weight_bit_width=self.num_bits
+            64 * 4 * 4, 10, bias=False, weight_bit_width=self.num_bits
         )
         self.lif3 = snn.Leaky(self.beta, threshold=self.thr, spike_grad=self.spike_grad)
         self.dropout = nn.Dropout(self.p1)
@@ -58,8 +58,8 @@ class Net(nn.Module):
         # Record the final layer
         spk3_rec = []
         mem3_rec = []
-        for step in range(x.size(0)):
-            cur1 = F.avg_pool2d(self.conv1(x[step]), 2)
+        for step in range(self.num_steps):
+            cur1 = F.avg_pool2d(self.conv1(x), 2)
             if self.batch_norm:
                 cur1 = self.conv1_bn(cur1)
 

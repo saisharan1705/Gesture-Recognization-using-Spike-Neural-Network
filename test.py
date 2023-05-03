@@ -10,8 +10,8 @@ def test(config, net, testloader, device="cpu"):
         for data in testloader:
             images, labels = data
             images, labels = images.to(device), labels.to(device)
-            outputs, _ = net(images.permute(1, 0, 2, 3, 4))
-            accuracy = SF.accuracy_rate(outputs, labels.long())
+            outputs, _ = net(images)
+            accuracy = SF.accuracy_rate(outputs, labels)
             total += labels.size(0)
             correct += accuracy * labels.size(0)
 
